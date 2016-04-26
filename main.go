@@ -3,14 +3,19 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/CiscoCloud/shipped-utils/server"
+	"github.com/gorilla/mux"
 )
 
-func defaultHandler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "<h1>Hello from Cisco Shipped!</h1>\n")
-}
+const (
+	Port = "8888"
+)
 
 func main() {
-    http.HandleFunc("/", defaultHandler)
-    fmt.Println("Example app listening at http://localhost:8888")
-    http.ListenAndServe(":8888", nil)
+	muxRouter := mux.NewRouter()
+
+	server.InitRoutes(muxRouter)
+	fmt.Println("Listening at port:", Port)
+	http.ListenAndServe(":"+Port, muxRouter)
 }
